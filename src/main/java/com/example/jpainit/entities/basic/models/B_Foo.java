@@ -1,6 +1,6 @@
 package com.example.jpainit.entities.basic.models;
 
-import com.example.jpainit.entities.basic.models.relationship.B_Bar;
+import com.example.jpainit.entities.basic.models.relationship.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 // POJO : Plain Old Java Object
 // JavaBean : Est un POJO qui respecte des conditions
@@ -44,7 +45,75 @@ public class B_Foo implements Serializable {
     @Embedded // Les champs de la classe mentionnée sont inclus dans la table de cette classe
     private B_Bar bar;
 
+    // ***ToOne -> Par colonne dans la classe : fait référence a un enregistrement unique
+    @OneToOne
+    private OTO oneToOne;
+    @ManyToOne
+    private MTO manyToOne;
+
+    // ***ToMany -> Par table d'association : référence plusieurs enregistrements
+    @OneToMany
+    private List<OTM> oneToMany;
+    @ManyToMany
+    private List<MTM> manyToMany;
+    @ManyToMany
+    private List<MTMBD> manyToManyBD;
+
     public B_Foo() {
+    }
+
+    public B_Bar getBar() {
+        return bar;
+    }
+
+    public B_Foo setBar(B_Bar bar) {
+        this.bar = bar;
+        return this;
+    }
+
+    public OTO getOneToOne() {
+        return oneToOne;
+    }
+
+    public B_Foo setOneToOne(OTO oneToOne) {
+        this.oneToOne = oneToOne;
+        return this;
+    }
+
+    public List<OTM> getOneToMany() {
+        return oneToMany;
+    }
+
+    public B_Foo setOneToMany(List<OTM> oneToMany) {
+        this.oneToMany = oneToMany;
+        return this;
+    }
+
+    public MTO getManyToOne() {
+        return manyToOne;
+    }
+
+    public B_Foo setManyToOne(MTO manyToOne) {
+        this.manyToOne = manyToOne;
+        return this;
+    }
+
+    public List<MTM> getManyToMany() {
+        return manyToMany;
+    }
+
+    public B_Foo setManyToMany(List<MTM> manyToMany) {
+        this.manyToMany = manyToMany;
+        return this;
+    }
+
+    public List<MTMBD> getManyToManyBD() {
+        return manyToManyBD;
+    }
+
+    public B_Foo setManyToManyBD(List<MTMBD> manyToManyBD) {
+        this.manyToManyBD = manyToManyBD;
+        return this;
     }
 
     public long getId() {
