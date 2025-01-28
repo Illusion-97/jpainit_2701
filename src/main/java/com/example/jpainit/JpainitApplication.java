@@ -1,19 +1,28 @@
 package com.example.jpainit;
 
-import com.example.jpainit.entities.basic.models.B_Foo;
-import com.example.jpainit.entities.basic.models.Enumeration;
-import com.example.jpainit.entities.basic.repositories.B_FooRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.jpainit.entities.composite_key.*;
+import com.example.jpainit.entities.elem_collection.ElemContainer;
+import com.example.jpainit.entities.elem_collection.ElemContainerRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 
+import java.util.List;
+
 @SpringBootApplication
 public class JpainitApplication {
 
-	@Autowired
-	private B_FooRepository repository;
+
+	private final ItemRepository itemRepository;
+	private final StorageRepository storageRepository;
+	private final StockRepository stockRepository;
+
+	public JpainitApplication(ItemRepository itemRepository, StorageRepository storageRepository, StockRepository stockRepository) {
+		this.itemRepository = itemRepository;
+		this.storageRepository = storageRepository;
+		this.stockRepository = stockRepository;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(JpainitApplication.class, args);
@@ -22,7 +31,10 @@ public class JpainitApplication {
 	// Sera vu durant le cours Spring Web
 	@EventListener
 	public void onStartup(ApplicationStartedEvent event) {
-		repository.findAll().forEach(System.out::println);
+		Item pc = itemRepository.save(new Item("PC"));
+		Storage nice = storageRepository.save(new Storage("Nice"));
+		stockRepository.save(new Stock(new StockId(pc, nice), 50));
+		stockRepository.save(new Stock(new StockId(pc, nice), 250));
 	}
 
 }
